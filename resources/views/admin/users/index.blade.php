@@ -17,7 +17,7 @@
 
 <body>
     <header>
-        <h1>Usuarios</h1>
+        <h1>{{ __('admin/titles.users') }}</h1>
         <div class="menu">
             <div class="menu-button"><span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                         <title>menu</title>
@@ -43,19 +43,19 @@
                 @foreach ($records as $record)
                     <table>
                         <tr>
-                            <th>Nombre:</th>
+                            <th>{{ __('admin/titles.name') }}:</th>
                             <td>{{ $record->name }}</td>
                         </tr>
                         <tr>
-                            <th>E-mail:</th>
+                            <th>{{ __('admin/titles.email') }}:</th>
                             <td>{{ $record->email }}</td>
                         </tr>
                         <tr>
-                            <th>Fecha de creación:</th>
+                            <th>{{ __('admin/titles.created_at') }}:</th>
                             <td>{{ $record->created_at }}</td>
                         </tr>
                         <tr>
-                            <th>Fecha de actualización:</th>
+                            <th>{{ __('admin/titles.updated_at') }}:</th>
                             <td>{{ $record->updated_at }}</td>
                         </tr>
                     </table>
@@ -88,11 +88,11 @@
             <div class="form-content">
                 <form class="form-crud">
                     <div class="form-field">
-                        <label>Nombre</label>
+                        <label>{{ __('admin/titles.name') }}</label>
                         <input type="text">
                     </div>
                     <div class="form-field">
-                        <label>E-mail</label>
+                        <label>{{ __('admin/titles.email') }}</label>
                         <input type="mail">
                     </div>
                 </form>
