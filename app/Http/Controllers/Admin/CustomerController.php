@@ -4,24 +4,23 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\View;
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Customer;
 use Illuminate\Http\Request;
-use App\Http\Requests\Admin\UserRequest;
+use App\Http\Requests\Admin\CustomerRequest;
 
-class UserController extends Controller
+class CustomerController extends Controller
 {
-  public function __construct(private User $user){}
+  public function __construct(private Customer $customer){}
  
   public function index()
   {
     try{
-      $records = $this->user
+      $records = $this->customer
         ->orderBy('created_at', 'desc')
         ->paginate(10);
 
-      $view = View::make('admin.users.index')
-         ->with('records', $records)
-         ->with('element', null);
+      $view = View::make('admin.customers.index')
+         ->with('records', $records);
 
       return $view;
     }
@@ -44,12 +43,11 @@ class UserController extends Controller
     }
   }
 
-  public function store(UserRequest $request)
+  public function store(CustomerRequest $request)
   {  
     try{
 
-      $data = $request->validated();
-
+     $data = $request->validated();
 
       unset($data['password_confirmation']);
      
@@ -57,7 +55,7 @@ class UserController extends Controller
         unset($data['password']);
       }
 
-      $this->user->updateOrCreate([
+      $this->customer->updateOrCreate([
         'id' => $request->input('id')
       ], $data);
 
@@ -71,17 +69,17 @@ class UserController extends Controller
     }    
   }
 
-  public function edit(User $user)
+  public function edit(Customer $customer)
   {
     return response()->json([
-      'element' => $user,
+      'element' => $customer,
     ], 200);
   }
 
-  public function destroy(User $user)
+  public function destroy(Customer $customer)
   {
     try{
-      $user->delete();
+      $customer->delete();
      
       return response()->json([
         'message' => 'Usuario eliminado correctamente',

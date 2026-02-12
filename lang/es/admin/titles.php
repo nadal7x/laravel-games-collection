@@ -8,4 +8,10 @@ return [
   'updated_at' => 'Fecha de actualización',
   'password' => 'Contraseña',
   'password_confirmation' => 'Confirmación de contraseña',
+  'description' => 'Descripción',
+  'url' => 'URL',
+  'release_date' => 'Fecha de lanzamiento',
+  'developer' => 'Desarrollador',
+  'publisher' => 'Editor',
+  'rating' => 'Calificación',
 ];

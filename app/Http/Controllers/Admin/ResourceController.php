@@ -4,24 +4,25 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\View;
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Resource;
 use Illuminate\Http\Request;
-use App\Http\Requests\Admin\UserRequest;
+use App\Http\Requests\Admin\ResourceRequest;
 
-class UserController extends Controller
+class ResourceController extends Controller
 {
-  public function __construct(private User $user){}
+  public function __construct(private Resource $resource){}
  
   public function index()
   {
     try{
-      $records = $this->user
+      $records = $this->resource
+        ->with('tags')
+        ->with('platforms')
         ->orderBy('created_at', 'desc')
         ->paginate(10);
 
-      $view = View::make('admin.users.index')
-         ->with('records', $records)
-         ->with('element', null);
+      $view = View::make('admin.resources.index')
+         ->with('records', $records);
 
       return $view;
     }
@@ -44,25 +45,18 @@ class UserController extends Controller
     }
   }
 
-  public function store(UserRequest $request)
+  public function store(ResourceRequest $request)
   {  
     try{
 
       $data = $request->validated();
 
-
-      unset($data['password_confirmation']);
-     
-      if (!$request->filled('password') && $request->filled('id')){
-        unset($data['password']);
-      }
-
-      $this->user->updateOrCreate([
+      $this->resource->updateOrCreate([
         'id' => $request->input('id')
       ], $data);
 
       return response()->json([
-        'message' => 'Usuario creado correctamente',
+        'message' => $request->input('id') ? \Lang::get('admin/notification.updated') : \Lang::get('admin/notification.created'),
       ], 201);
     }catch(\Exception $e){
       return response()->json([
@@ -71,20 +65,20 @@ class UserController extends Controller
     }    
   }
 
-  public function edit(User $user)
+  public function edit(Resource $resource)
   {
     return response()->json([
-      'element' => $user,
+      'element' => $resource,
     ], 200);
   }
 
-  public function destroy(User $user)
+  public function destroy(Resource $resource)
   {
     try{
-      $user->delete();
+      $resource->delete();
      
       return response()->json([
-        'message' => 'Usuario eliminado correctamente',
+        'message' => \Lang::get('admin/notification.deleted'),
       ], 200);
     }catch(\Exception $e){
       return response()->json([

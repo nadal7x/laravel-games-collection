@@ -1,1 +1,3 @@
-import './bootstrap';
+import './form';
+import './table';
+import './delete-modal';
