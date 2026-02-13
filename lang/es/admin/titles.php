@@ -14,4 +14,8 @@ return [
   'developer' => 'Desarrollador',
   'publisher' => 'Editor',
   'rating' => 'Calificación',
+  'tags' => 'Tags',
+  'platforms' => 'Plataformas',
+  'resources' => 'Juegos',
+  'customers' => 'Clientes',
 ];

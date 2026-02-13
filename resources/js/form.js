@@ -23,14 +23,16 @@ document.querySelector('.form').addEventListener('click', async event => {
 
   if (event.target.closest('.delete-button')) {
     const deleteButton = event.target.closest('.delete-button');
-    const endpoint = deleteButton.dataset.endpoint;
+    const endpointTemplate = deleteButton.dataset.endpoint;
     const form = formContainer.querySelector('form');
-    const elementId = form.querySelector('input[name="id"]');
+    const formData = new FormData(form);
+    const elementId = formData.get('id');
+    const endpoint = endpointTemplate.replace(':id', elementId);
 
     document.dispatchEvent(new CustomEvent('show-delete-modal', {
       detail: {
         endpoint: endpoint,
-        elementId: elementId.value
+        formData: formData
       }
     }));
   }

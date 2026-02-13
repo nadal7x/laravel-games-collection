@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
 <head>
     <meta charset="utf-8">
@@ -17,13 +18,21 @@
 
 <body>
     <header>
-        <h1>{{ __('admin/titles.users') }}</h1>
+        <h1>{{ __('admin/titles.platforms') }}</h1>
         <div class="menu">
-            <div class="menu-button"><span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <title>menu</title>
-                        <path d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" />
-                    </svg></span></div>
+            <div class="menu-button">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
             <div class="menu-content">
+                <nav class="nav">
+                    <a href="{{ route('users') }}">{{ __('admin/titles.users') }}</a>
+                    <a href="{{ route('customers') }}">{{ __('admin/titles.customers') }}</a>
+                    <a href="{{ route('resources') }}">{{ __('admin/titles.resources') }}</a>
+                    <a href="{{ route('tags') }}">{{ __('admin/titles.tags') }}</a>
+                    <a href="{{ route('platforms') }}">{{ __('admin/titles.platforms') }}</a>
+                </nav>
             </div>
         </div>
     </header>
@@ -41,7 +50,7 @@
             </div>
             <div class="table-content">
                 @foreach ($records as $record)
-                    <div class="table-element" data-id="{{ $record->id }}">
+                    <div class="table-element" data-endpoint="{{ route('platforms_edit', $record->id) }}">
                         <ul>
                             <li><span class="table-element-title">{{ __('admin/titles.name') }}:</span>
                                 {{ $record->name }}
@@ -63,7 +72,8 @@
                     <div class="general-button tab-button">General</div>
                 </div>
                 <div class="form-options-buttons">
-                    <div class="remove-button tab-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <div class="delete-button tab-button" data-endpoint="{{ route('platforms_destroy', ':id') }}"><svg
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <title>delete-outline</title>
                             <path
                                 d="M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z" />
@@ -76,7 +86,8 @@
                                 d="M19.36,2.72L20.78,4.14L15.06,9.85C16.13,11.39 16.28,13.24 15.38,14.44L9.06,8.12C10.26,7.22 12.11,7.37 13.65,8.44L19.36,2.72M5.93,17.57C3.92,15.56 2.69,13.16 2.35,10.92L7.23,8.83L14.67,16.27L12.58,21.15C10.34,20.81 7.94,19.58 5.93,17.57Z" />
                         </svg>
                     </div>
-                    <div class="save-button tab-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <div class="save-button tab-button" data-endpoint="{{ route('platforms_store') }}"><svg
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <title>content-save-outline</title>
                             <path
                                 d="M17 3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V7L17 3M19 19H5V5H16.17L19 7.83V19M12 12C10.34 12 9 13.34 9 15S10.34 18 12 18 15 16.66 15 15 13.66 12 12 12M6 6H15V10H6V6Z" />
@@ -86,6 +97,7 @@
             </div>
             <div class="form-content">
                 <form>
+                    <input type="hidden" name="id" value="{{ $element ? $element->id : '' }}">
                     <div class="form-field">
                         <label>{{ __('admin/titles.name') }}</label>
                         <input type="text" name="name">
@@ -95,7 +107,7 @@
         </div>
     </main>
     <footer>
-
+        <p>© {{ date('Y') }} {{ config('app.name') }}</p>
     </footer>
 </body>
 

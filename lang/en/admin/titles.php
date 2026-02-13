@@ -14,4 +14,9 @@ return [
   'developer' => 'Developer',
   'publisher' => 'Publisher',
   'rating' => 'Rating',
+  'tags' => 'Tags',
+  'platforms' => 'Platforms',
+  'resources' => 'Games',
+  'customers' => 'Customers',
+
 ];

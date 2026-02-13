@@ -20,7 +20,8 @@ class PlatformController extends Controller
         ->paginate(10);
 
       $view = View::make('admin.platforms.index')
-         ->with('records', $records);
+         ->with('records', $records)
+         ->with('element', null);
 
       return $view;
     }

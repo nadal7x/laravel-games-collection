@@ -20,7 +20,8 @@ class TagController extends Controller
         ->paginate(10);
 
       $view = View::make('admin.tags.index')
-         ->with('records', $records);
+         ->with('records', $records)
+         ->with('element', null);
 
       return $view;
     }

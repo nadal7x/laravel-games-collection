@@ -1,6 +1,9 @@
 document.addEventListener('show-delete-modal', function (event) {
   const endpoint = event.detail.endpoint;
-  const elementId = event.detail.elementId;
+  const formData = event.detail.formData;
+  const elementId = formData.get('id');
+
+
 
   console.log(endpoint);
   console.log(elementId);
@@ -36,8 +39,26 @@ document.addEventListener('show-delete-modal', function (event) {
     deleteModal.remove();
   });
 
-  deleteModalConfirm.addEventListener('click', function () {
+  deleteModalConfirm.addEventListener('click', async function () {
     deleteModal.remove();
+    try {
+      const response = await fetch(endpoint, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: formData
+      })
+      const data = await response.json();
+      if (!data.success) {
+        throw new Error(data.message);
+      }
+    } catch (err) {
+      console.error(err);
+    }
   });
 
 });
+
+

@@ -20,7 +20,8 @@ class CustomerController extends Controller
         ->paginate(10);
 
       $view = View::make('admin.customers.index')
-         ->with('records', $records);
+         ->with('records', $records)
+         ->with('element', null);
 
       return $view;
     }

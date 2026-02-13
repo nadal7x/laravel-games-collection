@@ -26,7 +26,7 @@ class ResourceRequest extends FormRequest
         'release_date' => 'required|date',
         'developer' => 'required|min:3|max:64',
         'publisher' => 'required|min:3|max:64',
-        'rating' => 'nullable|numeric|min:0|max:100',
+        'rating' => 'nullable|numeric|min:0|max:100|decimal:2',
       ];
     }
 
