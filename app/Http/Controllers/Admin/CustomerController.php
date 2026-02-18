@@ -46,28 +46,21 @@ class CustomerController extends Controller
 
   public function store(CustomerRequest $request)
   {  
-    try{
+    $data = $request->validated();
 
-     $data = $request->validated();
+    unset($data['password_confirmation']);
+    
+    if (!$request->filled('password') && $request->filled('id')){
+      unset($data['password']);
+    }
 
-      unset($data['password_confirmation']);
-     
-      if (!$request->filled('password') && $request->filled('id')){
-        unset($data['password']);
-      }
+    $this->customer->updateOrCreate([
+      'id' => $request->input('id')
+    ], $data);
 
-      $this->customer->updateOrCreate([
-        'id' => $request->input('id')
-      ], $data);
-
-      return response()->json([
-        'message' => 'Usuario creado correctamente',
-      ], 201);
-    }catch(\Exception $e){
-      return response()->json([
-        'error' => $e->getMessage(),
-      ], 422);
-    }    
+    return response()->json([
+      'message' => 'Usuario creado correctamente',
+    ], 201); 
   }
 
   public function edit(Customer $customer)

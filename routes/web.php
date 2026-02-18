@@ -2,12 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
 Route::group(['prefix' => 'admin'], function () {
+  
   Route::resource('usuarios', 'App\Http\Controllers\Admin\UserController', [
     'parameters' => [
       'usuarios' => 'user',
@@ -46,6 +42,7 @@ Route::group(['prefix' => 'admin'], function () {
       'destroy' => 'tags_destroy',
     ]
   ]);
+
   Route::resource('plataformas', 'App\Http\Controllers\Admin\PlatformController', [
     'parameters' => [
       'plataformas' => 'platform',
@@ -58,6 +55,7 @@ Route::group(['prefix' => 'admin'], function () {
       'destroy' => 'platforms_destroy',
     ]
   ]);
+
   Route::resource('recursos', 'App\Http\Controllers\Admin\ResourceController', [
     'parameters' => [
       'recursos' => 'resource',
@@ -71,3 +69,10 @@ Route::group(['prefix' => 'admin'], function () {
     ]
   ]);
 });
+
+Route::get('/', ['App\Http\Controllers\Public\HomeController', 'index'])->name('home');
+Route::get('/recursos/{resource}', ['App\Http\Controllers\Public\HomeController', 'show'])->name('resources.show');
+
+Route::get('login', ['App\Http\Controllers\Auth\LoginController', 'showLoginForm'])->name('login');
+Route::post('login', ['App\Http\Controllers\Auth\LoginController', 'login']);
+Route::post('logout', ['App\Http\Controllers\Auth\LoginController', 'logout'])->name('logout');

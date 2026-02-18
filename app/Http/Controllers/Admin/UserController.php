@@ -46,8 +46,7 @@ class UserController extends Controller
 
   public function store(UserRequest $request)
   {  
-    try{
-
+    
       $data = $request->validated();
 
 
@@ -63,12 +62,7 @@ class UserController extends Controller
 
       return response()->json([
         'message' => 'Usuario creado correctamente',
-      ], 201);
-    }catch(\Exception $e){
-      return response()->json([
-        'error' => $e->getMessage(),
-      ], 422);
-    }    
+      ], 201);  
   }
 
   public function edit(User $user)

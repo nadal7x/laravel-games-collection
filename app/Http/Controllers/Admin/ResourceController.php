@@ -16,8 +16,6 @@ class ResourceController extends Controller
   {
     try{
       $records = $this->resource
-        ->with('tags')
-        ->with('platforms')
         ->orderBy('created_at', 'desc')
         ->paginate(10);
 
@@ -47,23 +45,19 @@ class ResourceController extends Controller
   }
 
   public function store(ResourceRequest $request)
-  {  
-    try{
+  {
+    $data = $request->validated();
 
-      $data = $request->validated();
+    $record = $this->resource->updateOrCreate(
+        ['id' => $request->input('id')],
+        $data
+    );
 
-      $this->resource->updateOrCreate([
-        'id' => $request->input('id')
-      ], $data);
-
-      return response()->json([
-        'message' => $request->input('id') ? \Lang::get('admin/notification.updated') : \Lang::get('admin/notification.created'),
-      ], 201);
-    }catch(\Exception $e){
-      return response()->json([
-        'error' => $e->getMessage(),
-      ], 422);
-    }    
+    return response()->json([
+        'message' => $request->input('id') 
+            ? \Lang::get('admin/notification.updated') 
+            : \Lang::get('admin/notification.created'),
+    ], 201);
   }
 
   public function edit(Resource $resource)

@@ -16,6 +16,6 @@ class ResourceTag extends Model
 
     public function resources()
     {
-        return $this->belongsToMany(Resource::class);
+        return $this->belongsTo(Resource::class);
     }
 }

@@ -22,11 +22,11 @@ class ResourceRequest extends FormRequest
       return [
         'name' => 'required|min:3|max:64',
         'description' => 'required|min:3|max:255',
-        'url' => 'required|url|max:255',
+        'url' => 'required|min:3|max:255',
         'release_date' => 'required|date',
         'developer' => 'required|min:3|max:64',
         'publisher' => 'required|min:3|max:64',
-        'rating' => 'nullable|numeric|min:0|max:100|decimal:2',
+        'rating' => 'required|min:1|max:100',
       ];
     }
 
@@ -34,25 +34,26 @@ class ResourceRequest extends FormRequest
     {
       return [
         'name.required' => 'El nombre es obligatorio',
-        'name.min' => 'El mínimo de caracteres permitidos para el nombre son 3',
-        'name.max' => 'El máximo de caracteres permitidos para el nombre son 64',
+        'name.min' => 'El nombre debe tener al menos 3 caracteres',
+        'name.max' => 'El nombre debe tener menos de 64 caracteres',
         'description.required' => 'La descripción es obligatoria',
-        'description.min' => 'El mínimo de caracteres permitidos para la descripción son 3',
-        'description.max' => 'El máximo de caracteres permitidos para la descripción son 255',
+        'description.min' => 'La descripción debe tener al menos 3 caracteres',
+        'description.max' => 'La descripción debe tener menos de 255 caracteres',
         'url.required' => 'La URL es obligatoria',
-        'url.url' => 'El formato de URL es incorrecto',
-        'url.max' => 'El máximo de caracteres permitidos para la URL son 255',
+        'url.url' => 'La URL debe ser una URL valida',
+        'url.min' => 'La URL debe tener al menos 3 caracteres',
+        'url.max' => 'La URL debe tener menos de 255 caracteres',
         'release_date.required' => 'La fecha de lanzamiento es obligatoria',
-        'release_date.date' => 'El formato de fecha de lanzamiento es incorrecto',
+        'release_date.date' => 'La fecha de lanzamiento debe ser una fecha valida',
         'developer.required' => 'El desarrollador es obligatorio',
-        'developer.min' => 'El mínimo de caracteres permitidos para el desarrollador son 3',
-        'developer.max' => 'El máximo de caracteres permitidos para el desarrollador son 64',
-        'publisher.required' => 'El publisher es obligatorio',
-        'publisher.min' => 'El mínimo de caracteres permitidos para el publisher son 3',
-        'publisher.max' => 'El máximo de caracteres permitidos para el publisher son 64',
-        'rating.numeric' => 'La calificación debe ser un número',
-        'rating.min' => 'La calificación mínima es 0',
-        'rating.max' => 'La calificación máxima es 100',
+        'developer.min' => 'El desarrollador debe tener al menos 3 caracteres',
+        'developer.max' => 'El desarrollador debe tener menos de 64 caracteres',
+        'publisher.required' => 'El editor es obligatorio',
+        'publisher.min' => 'El editor debe tener al menos 3 caracteres',
+        'publisher.max' => 'El editor debe tener menos de 64 caracteres',
+        'rating.required' => 'La calificación es obligatoria',
+        'rating.min' => 'La calificación debe tener al menos 1 caracter',
+        'rating.max' => 'La calificación debe tener menos de 100 caracteres',
       ];
     }
 }

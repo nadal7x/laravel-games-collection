@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\Resource;
+use App\Models\ResourceTag;
 
 class Tag extends Model
 {
@@ -16,6 +17,6 @@ class Tag extends Model
 
     public function resources()
     {
-        return $this->belongsToMany(Resource::class);
+        return $this->hasManyThrough(Resource::class, ResourceTag::class);
     }
 }

@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-
 use App\Models\Resource;
 
 class ResourcePlatform extends Model
@@ -17,6 +16,6 @@ class ResourcePlatform extends Model
 
     public function resources()
     {
-        return $this->belongsToMany(Resource::class);
+        return $this->belongsTo(Resource::class);
     }
 }
