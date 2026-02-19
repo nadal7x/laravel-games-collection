@@ -12,69 +12,119 @@ class PlatformController extends Controller
 {
   public function __construct(private Platform $platform){}
  
-  public function index()
+public function index()
   {
     try{
-      $records = $this->platform
+
+      $platforms = $this->platform
         ->orderBy('created_at', 'desc')
         ->paginate(10);
+      
+      if(request()->ajax()) {
+            
+        return response()->json([
+          'table' => view('components.table.platform', ['records' => $platforms])->render(),
+          'form' => view('components.form.platform', ['element' => $this->platform])->render()
+        ], 200); 
 
-      $view = View::make('admin.platforms.index')
-         ->with('records', $records)
-         ->with('element', null);
+      }else{
 
-      return $view;
+        $view = View::make('admin.platforms.index')
+        ->with('records', $platforms)
+        ->with('element', $this->platform);
+
+        return $view;
+      }
     }
     catch(\Exception $e){
-     
+      return response()->json([
+        'message' => \Lang::get('admin/notification.error'),
+      ], 500);
     }
   }
 
   public function create()
   {
-   try {
+    try {
       if (request()->ajax()) {
         return response()->json([
+          'form' => view('components.form.platform', ['element' => $this->platform])->render(),
         ], 200);
       }
     } catch (\Exception $e) {
       return response()->json([
-        'message' =>  \Lang::get('admin/notification.error'),
+          'message' =>  \Lang::get('admin/notification.error'),
       ], 500);
     }
   }
 
-  public function store(PlatformRequest $request)
-  {  
-    $data = $request->validated();
+   public function store(PlatformRequest $request)
+  {            
+    try{
 
-    $this->platform->updateOrCreate([
-      'id' => $request->input('id')
-    ], $data);
+      $data = $request->validated();
 
-    return response()->json([
-      'message' => $request->input('id') ? \Lang::get('admin/notification.updated') : \Lang::get('admin/notification.created'),
-    ], 201);
+      $this->platform->updateOrCreate([
+        'id' => $request->input('id')
+      ], $data);
+
+      $platforms = $this->platform
+      ->orderBy('created_at', 'desc')
+      ->paginate(10);
+
+      if ($request->filled('id')){
+        $message = \Lang::get('admin/notification.update');
+      }else{
+        $message = \Lang::get('admin/notification.create');
+      }
+      
+      return response()->json([
+        'table' => view('components.table.platform', ['records' => $platforms])->render(),
+        'form' => view('components.form.platform', ['element' => $this->platform])->render(),
+        'message' => $message,
+      ], 200);
+    }
+    catch(\Exception $e){
+      return response()->json([
+        'message' => $e->getMessage(),
+      ], 500);
+    }
   }
 
   public function edit(Platform $platform)
   {
-    return response()->json([
-      'element' => $platform,
-    ], 200);
+    try{
+      return response()->json([
+        'form' => view('components.form.platform', ['element' => $platform])->render(),
+      ], 200);
+    }
+    catch(\Exception $e){
+      return response()->json([
+        'message' => \Lang::get('admin/notification.error'),
+      ], 500);
+    }
   }
 
   public function destroy(Platform $platform)
   {
     try{
       $platform->delete();
-     
+
+      $platforms = $this->platform
+      ->orderBy('created_at', 'desc')
+      ->paginate(10);
+
+      $message = \Lang::get('admin/notification.destroy');
+      
       return response()->json([
-        'message' => \Lang::get('admin/notification.deleted'),
+        'table' => view('components.table.platform', ['records' => $platforms])->render(),
+        'form' => view('components.form.platform', ['element' => $this->platform])->render(),
+        'message' => $message,
       ], 200);
-    }catch(\Exception $e){
+    }
+    catch(\Exception $e){
       return response()->json([
-        'error' => $e->getMessage(),
+        'message' => \Lang::get('admin/notification.error'),
       ], 500);
     }
   }

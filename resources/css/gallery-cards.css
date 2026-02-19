@@ -1,0 +1,69 @@
+.gallery {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: start;
+  margin: 2rem 0;
+
+}
+
+.card {
+  position: relative;
+  width: 200px;
+  height: fit-content;
+  border: 3px solid var(--color-primary);
+  border-radius: 5px;
+  margin: 1rem;
+  background-color: var(--color-surface);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: perspective(600px) rotateX(3deg) translateY(-6px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 5px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.card:hover::after {
+  animation: neonGlow 1.5s infinite alternate;
+}
+
+@keyframes neonGlow {
+  0% {
+    box-shadow:
+      0 0 5px rgba(var(--color-primary-rgb), 0.4),
+      0 0 10px rgba(var(--color-primary-rgb), 0.4),
+      0 0 20px rgba(var(--color-primary-rgb), 0.3);
+  }
+
+  100% {
+    box-shadow:
+      0 0 10px rgba(var(--color-primary-rgb), 0.8),
+      0 0 20px rgba(var(--color-primary-rgb), 0.7),
+      0 0 40px rgba(var(--color-primary-rgb), 0.6);
+  }
+}
+
+.card a {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+
+.card .card-text {
+  padding: 0.5rem;
+}
+
+.card-text .card-title {
+  margin-top: 0;
+}

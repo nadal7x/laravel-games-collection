@@ -1,6 +1,6 @@
 <x-crud title="{{ __('admin/titles.tags') }}" seotitle="{{ __('admin/titles.tags') }}">
     <x-slot name="table">
-        <x-admin-table :records="$records" />
+        <x-table.tag :records="$records" />
     </x-slot>
 
     <x-slot name="form">

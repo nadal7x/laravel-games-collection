@@ -11,78 +11,126 @@ use App\Http\Requests\Admin\UserRequest;
 class UserController extends Controller
 {
   public function __construct(private User $user){}
- 
+
   public function index()
   {
     try{
-      $records = $this->user
+
+      $users = $this->user
         ->orderBy('created_at', 'desc')
         ->paginate(10);
+      
+      if(request()->ajax()) {
+            
+        return response()->json([
+          'table' => view('components.table.user', ['records' => $users])->render(),
+          'form' => view('components.form.user', ['element' => $this->user])->render()
+        ], 200); 
 
-      $view = View::make('admin.users.index')
-         ->with('records', $records)
-         ->with('element', null);
+      }else{
 
-      return $view;
+        $view = View::make('admin.users.index')
+        ->with('records', $users)
+        ->with('element', $this->user);
+
+        return $view;
+      }
     }
     catch(\Exception $e){
-     
+      return response()->json([
+        'message' => \Lang::get('admin/notification.error'),
+      ], 500);
     }
   }
 
-  public function create()
+   public function create()
   {
-   try {
+    try {
       if (request()->ajax()) {
         return response()->json([
+          'form' => view('components.form.user', ['element' => $this->user])->render(),
         ], 200);
       }
     } catch (\Exception $e) {
       return response()->json([
-        'message' =>  \Lang::get('admin/notification.error'),
+          'message' =>  \Lang::get('admin/notification.error'),
       ], 500);
     }
   }
 
   public function store(UserRequest $request)
-  {  
-    
+  {            
+    try{
+
       $data = $request->validated();
 
-
       unset($data['password_confirmation']);
-     
+      
       if (!$request->filled('password') && $request->filled('id')){
         unset($data['password']);
       }
-
+  
       $this->user->updateOrCreate([
         'id' => $request->input('id')
       ], $data);
 
+      $users = $this->user
+      ->orderBy('created_at', 'desc')
+      ->paginate(10);
+
+      if ($request->filled('id')){
+        $message = \Lang::get('admin/notification.update');
+      }else{
+        $message = \Lang::get('admin/notification.create');
+      }
+      
       return response()->json([
-        'message' => 'Usuario creado correctamente',
-      ], 201);  
+        'table' => view('components.table.user', ['records' => $users])->render(),
+        'form' => view('components.form.user', ['element' => $this->user])->render(),
+        'message' => $message,
+      ], 200);
+    }
+    catch(\Exception $e){
+      return response()->json([
+        'message' => $e->getMessage(),
+      ], 500);
+    }
   }
 
   public function edit(User $user)
   {
-    return response()->json([
-      'element' => $user,
-    ], 200);
+    try{
+      return response()->json([
+        'form' => view('components.form.user', ['element' => $user])->render(),
+      ], 200);
+    }
+    catch(\Exception $e){
+      return response()->json([
+        'message' => \Lang::get('admin/notification.error'),
+      ], 500);
+    }
   }
 
   public function destroy(User $user)
   {
     try{
       $user->delete();
-     
+
+      $users = $this->user
+      ->orderBy('created_at', 'desc')
+      ->paginate(10);
+
+      $message = \Lang::get('admin/notification.destroy');
+      
       return response()->json([
-        'message' => 'Usuario eliminado correctamente',
+        'table' => view('components.table.user', ['records' => $users])->render(),
+        'form' => view('components.form.user', ['element' => $this->user])->render(),
+        'message' => $message,
       ], 200);
-    }catch(\Exception $e){
+    }
+    catch(\Exception $e){
       return response()->json([
-        'error' => $e->getMessage(),
+        'message' => \Lang::get('admin/notification.error'),
       ], 500);
     }
   }

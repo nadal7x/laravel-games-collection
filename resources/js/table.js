@@ -1,4 +1,5 @@
-const tableContainer = document.querySelector('.table-content');
+const tableContainer = document.querySelector('.table');
+const formContainer = document.querySelector('.form');
 
 if (tableContainer) {
   tableContainer.addEventListener('click', function (event) {
@@ -7,16 +8,12 @@ if (tableContainer) {
     if (event.target.closest('.table-element')) {
       const tableElement = event.target.closest('.table-element');
       const endpoint = tableElement.dataset.endpoint;
+      console.log(endpoint);
 
       fetch(endpoint)
         .then(response => response.json())
         .then(data => {
-
-          document.dispatchEvent(new CustomEvent('show-element', {
-            detail: {
-              element: data.element
-            }
-          }));
+          formContainer.innerHTML = data.form;
         })
         .catch(error => console.error(error));
     }

@@ -15,66 +15,116 @@ class TagController extends Controller
   public function index()
   {
     try{
-      $records = $this->tag
+
+      $tags = $this->tag
         ->orderBy('created_at', 'desc')
         ->paginate(10);
+      
+      if(request()->ajax()) {
+            
+        return response()->json([
+          'table' => view('components.table.tag', ['records' => $tags])->render(),
+          'form' => view('components.form.tag', ['element' => $this->tag])->render()
+        ], 200); 
 
-      $view = View::make('admin.tags.index')
-         ->with('records', $records)
-         ->with('element', null);
+      }else{
 
-      return $view;
+        $view = View::make('admin.tags.index')
+        ->with('records', $tags)
+        ->with('element', $this->tag);
+
+        return $view;
+      }
     }
     catch(\Exception $e){
-     
+      return response()->json([
+        'message' => \Lang::get('admin/notification.error'),
+      ], 500);
     }
   }
 
   public function create()
   {
-   try {
+    try {
       if (request()->ajax()) {
         return response()->json([
+          'form' => view('components.form.tag', ['element' => $this->tag])->render(),
         ], 200);
       }
     } catch (\Exception $e) {
       return response()->json([
-        'message' =>  \Lang::get('admin/notification.error'),
+          'message' =>  \Lang::get('admin/notification.error'),
       ], 500);
     }
   }
 
-  public function store(TagRequest $request)
-  {  
-    $data = $request->validated();
+   public function store(TagRequest $request)
+  {            
+    try{
 
-    $this->tag->updateOrCreate([
-      'id' => $request->input('id')
-    ], $data);
+      $data = $request->validated();
 
-    return response()->json([
-      'message' => $request->input('id') ? \Lang::get('admin/notification.updated') : \Lang::get('admin/notification.created'),
-    ], 201);
+      $this->tag->updateOrCreate([
+        'id' => $request->input('id')
+      ], $data);
+
+      $tags = $this->tag
+      ->orderBy('created_at', 'desc')
+      ->paginate(10);
+
+      if ($request->filled('id')){
+        $message = \Lang::get('admin/notification.update');
+      }else{
+        $message = \Lang::get('admin/notification.create');
+      }
+      
+      return response()->json([
+        'table' => view('components.table.tag', ['records' => $tags])->render(),
+        'form' => view('components.form.tag', ['element' => $this->tag])->render(),
+        'message' => $message,
+      ], 200);
+    }
+    catch(\Exception $e){
+      return response()->json([
+        'message' => $e->getMessage(),
+      ], 500);
+    }
   }
 
   public function edit(Tag $tag)
   {
-    return response()->json([
-      'element' => $tag,
-    ], 200);
+    try{
+      return response()->json([
+        'form' => view('components.form.tag', ['element' => $tag])->render(),
+      ], 200);
+    }
+    catch(\Exception $e){
+      return response()->json([
+        'message' => \Lang::get('admin/notification.error'),
+      ], 500);
+    }
   }
 
   public function destroy(Tag $tag)
   {
     try{
       $tag->delete();
-     
+
+      $tags = $this->tag
+      ->orderBy('created_at', 'desc')
+      ->paginate(10);
+
+      $message = \Lang::get('admin/notification.destroy');
+      
       return response()->json([
-        'message' => \Lang::get('admin/notification.deleted'),
+        'table' => view('components.table.tag', ['records' => $tags])->render(),
+        'form' => view('components.form.tag', ['element' => $this->tag])->render(),
+        'message' => $message,
       ], 200);
-    }catch(\Exception $e){
+    }
+    catch(\Exception $e){
       return response()->json([
-        'error' => $e->getMessage(),
+        'message' => \Lang::get('admin/notification.error'),
       ], 500);
     }
   }

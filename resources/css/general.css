@@ -1,0 +1,27 @@
+main.public-main {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.main-text {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+/*//buttons//*/
+
+.main-button {
+  background-color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+  border-radius: 3px;
+  color: var(--color-text);
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.main-button:hover {
+  background-color: var(--color-bg);
+  color: var(--color-primary);
+}

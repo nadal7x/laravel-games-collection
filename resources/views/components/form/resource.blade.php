@@ -5,14 +5,16 @@
         <div class="general-buttons tab-button">General</div>
     </div>
     <div class="form-options-tabs">
-        <div class="delete-button tab-button" data-endpoint="{{ route('resources_destroy', ':id') }}"><svg
-                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <title>delete-outline</title>
-                <path
-                    d="M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z" />
-            </svg>
-        </div>
-        <div class="clear-button tab-button">
+        @if (isset($element->id))
+            <div class="delete-button tab-button" data-endpoint="{{ route('resources_destroy', ':id') }}"><svg
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <title>delete-outline</title>
+                    <path
+                        d="M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z" />
+                </svg>
+            </div>
+        @endif
+        <div class="clear-button tab-button" data-endpoint="{{ route('resources_create') }}">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <title>broom</title>
                 <path
@@ -47,8 +49,7 @@
         </div>
         <div class="form-field">
             <label>{{ __('admin/titles.release_date') }}</label>
-            <input type="date" name="release_date"
-                value="{{ $element ? $element->release_date->format('Y-m-d') : '' }}">
+            <input type="date" name="release_date" value="{{ $element ? $element->release_date : '' }}">
         </div>
         <div class="form-field">
             <label>{{ __('admin/titles.developer') }}</label>

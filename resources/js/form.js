@@ -1,8 +1,9 @@
+const formContainer = document.querySelector('.form');
+const tableContainer = document.querySelector('.table');
+
 document.addEventListener('show-element', function (event) {
   const element = event.detail.element;
   const form = document.querySelector('form');
-  const deleteButton = document.querySelector('.form .delete-button');
-  deleteButton.style.display = 'inline-block';
 
   Object.keys(element).forEach(key => {
     const input = form.querySelector(`[name="${key}"]`);
@@ -12,13 +13,38 @@ document.addEventListener('show-element', function (event) {
   });
 });
 
-const formContainer = document.querySelector('.form');
+document.addEventListener('reset-crud', function (event) {
+  const data = event.detail.data;
+  if (data.form && formContainer) {
+    formContainer.innerHTML = data.form;
+  }
+  if (data.table && tableContainer) {
+    tableContainer.innerHTML = data.table;
+  }
+});
+
 if (formContainer) {
   formContainer.addEventListener('click', async event => {
 
     if (event.target.closest('.clear-button')) {
       event.preventDefault();
-      resetForm();
+      const clearButton = event.target.closest('.clear-button');
+      const endpoint = clearButton.dataset.endpoint;
+      try {
+        const response = await fetch(endpoint, {
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
+          }
+        });
+
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+
+        const data = await response.json();
+        formContainer.innerHTML = data.form;
+      } catch (error) {
+        console.error(error);
+      }
     }
 
     if (event.target.closest('.delete-button')) {
@@ -60,9 +86,12 @@ if (formContainer) {
         }
 
         const data = await response.json();
-
-        console.log(data)
-
+        if (data.form) {
+          formContainer.innerHTML = data.form;
+        }
+        if (data.table && tableContainer) {
+          tableContainer.innerHTML = data.table;
+        }
 
       } catch (err) {
         if (err.status === 422) {
@@ -74,11 +103,9 @@ if (formContainer) {
             const label = input.parentElement.querySelector('label');
 
             if (label) {
-              console.log(label)
               const error = document.createElement('span');
               error.classList.add('error');
               error.textContent = value;
-              console.log(value)
               label.appendChild(error);
             }
           });
@@ -90,17 +117,6 @@ if (formContainer) {
       }
     }
   });
-
-  function resetForm() {
-    const form = document.querySelector('form');
-    let elementId = form.querySelector('input[name="id"]');
-    const deleteButton = document.querySelector('.form .delete-button');
-    deleteButton.style.display = 'none';
-    form.reset();
-    if (elementId) {
-      elementId.value = '';
-    }
-  }
 }
 
 
