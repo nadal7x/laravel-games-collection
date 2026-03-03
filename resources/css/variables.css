@@ -11,6 +11,18 @@
 
   --color-primary-rgb: 23, 169, 153;
 
+  /*/ progress colors/*/
+  --color-pending: #f59e0b;
+  --color-in-progress: var(--color-primary);
+  --color-completed: var(--color-success);
+  --color-canceled: var(--color-danger);
+
+  /*/ progress colors rgb/*/
+  --color-pending-rgb: 245, 158, 11;
+  --color-in-progress-rgb: 23, 169, 153;
+  --color-completed-rgb: 34, 197, 94;
+  --color-canceled-rgb: 239, 68, 68;
+
   /*//Sizes//*/
   --header-height: 60px;
   --menu-width: 250px;

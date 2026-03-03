@@ -8,6 +8,7 @@ use App\Models\Customer;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\CustomerRequest;
 
+
 class CustomerController extends Controller
 {
   public function __construct(private Customer $customer){}

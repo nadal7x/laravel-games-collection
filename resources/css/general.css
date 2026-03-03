@@ -19,9 +19,48 @@ main.public-main {
   padding: 0.5rem 1rem;
   cursor: pointer;
   transition: all 0.2s ease;
+  text-decoration: none;
 }
 
 .main-button:hover {
   background-color: var(--color-bg);
   color: var(--color-primary);
+}
+
+
+
+.game-pending {
+  background-color: rgba(var(--color-pending-rgb), 0.12);
+  border: 1px solid var(--color-pending);
+}
+
+.game-in-progress {
+  background-color: rgba(var(--color-in-progress-rgb), 0.12);
+  border: 1px solid var(--color-in-progress);
+}
+
+.game-completed {
+  background-color: rgba(var(--color-completed-rgb), 0.12);
+  border: 1px solid var(--color-completed);
+}
+
+.game-canceled {
+  background-color: rgba(var(--color-canceled-rgb), 0.12);
+  border: 1px solid var(--color-canceled);
+}
+
+.main-button.game-pending:hover {
+  color: var(--color-pending);
+}
+
+.main-button.game-in-progress:hover {
+  color: var(--color-in-progress);
+}
+
+.main-button.game-completed:hover {
+  color: var(--color-completed);
+}
+
+.main-button.game-canceled:hover {
+  color: var(--color-canceled);
 }

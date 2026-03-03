@@ -1,11 +1,13 @@
 @import 'variables.css';
-@import 'structure.css';
+@import 'layout.css';
 @import 'general.css';
 @import 'menu.css';
+@import 'account-menu.css';
+@import 'customer-dashboard.css';
 @import 'login.css';
 @import 'resource-page.css';
 @import 'gallery-cards.css';
-@import 'crud.css';
-@import 'form.css';
-@import 'table.css';
+@import './admin/crud.css';
+@import './admin/form.css';
+@import './admin/table.css';
 @import 'modal.css';

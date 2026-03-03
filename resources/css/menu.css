@@ -1,5 +1,12 @@
 /*/// Menu ///*/
 
+.menu {
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .menu-button {
   width: 30px;
   height: 20px;

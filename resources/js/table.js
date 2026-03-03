@@ -1,5 +1,15 @@
+import { store } from './redux/store';
+import { updateForm } from './redux/crud-slice';
+
 const tableContainer = document.querySelector('.table');
-const formContainer = document.querySelector('.form');
+
+store.subscribe(() => {
+  const currentState = store.getState();
+
+  if (currentState.crud.table && tableContainer) {
+    tableContainer.innerHTML = currentState.crud.table;
+  }
+});
 
 if (tableContainer) {
   tableContainer.addEventListener('click', function (event) {
@@ -13,7 +23,7 @@ if (tableContainer) {
       fetch(endpoint)
         .then(response => response.json())
         .then(data => {
-          formContainer.innerHTML = data.form;
+          store.dispatch(updateForm(data.form));
         })
         .catch(error => console.error(error));
     }

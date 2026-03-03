@@ -1,5 +1,15 @@
+import { store } from './redux/store';
+import { updateForm, updateTable, showDeleteModal } from './redux/crud-slice';
+
 const formContainer = document.querySelector('.form');
-const tableContainer = document.querySelector('.table');
+
+store.subscribe(() => {
+  const currentState = store.getState();
+
+  if (currentState.crud.form && formContainer) {
+    formContainer.innerHTML = currentState.crud.form;
+  }
+});
 
 document.addEventListener('show-element', function (event) {
   const element = event.detail.element;
@@ -15,11 +25,11 @@ document.addEventListener('show-element', function (event) {
 
 document.addEventListener('reset-crud', function (event) {
   const data = event.detail.data;
-  if (data.form && formContainer) {
-    formContainer.innerHTML = data.form;
+  if (data.form) {
+    store.dispatch(updateForm(data.form));
   }
-  if (data.table && tableContainer) {
-    tableContainer.innerHTML = data.table;
+  if (data.table) {
+    store.dispatch(updateTable(data.table));
   }
 });
 
@@ -41,7 +51,10 @@ if (formContainer) {
         if (!response.ok) throw new Error('HTTP ' + response.status);
 
         const data = await response.json();
-        formContainer.innerHTML = data.form;
+
+        if (data.form) {
+          store.dispatch(updateForm(data.form));
+        }
       } catch (error) {
         console.error(error);
       }
@@ -56,11 +69,9 @@ if (formContainer) {
       const elementId = formData.get('id');
       const endpoint = endpointTemplate.replace(':id', elementId);
 
-      document.dispatchEvent(new CustomEvent('show-delete-modal', {
-        detail: {
-          endpoint: endpoint,
-          formData: formData
-        }
+      store.dispatch(showDeleteModal({
+        endpoint,
+        id: elementId
       }));
     }
 
@@ -87,10 +98,10 @@ if (formContainer) {
 
         const data = await response.json();
         if (data.form) {
-          formContainer.innerHTML = data.form;
+          store.dispatch(updateForm(data.form));
         }
-        if (data.table && tableContainer) {
-          tableContainer.innerHTML = data.table;
+        if (data.table) {
+          store.dispatch(updateTable(data.table));
         }
 
       } catch (err) {

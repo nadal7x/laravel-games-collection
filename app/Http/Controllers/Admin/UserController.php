@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\UserRequest;
 
+
 class UserController extends Controller
 {
   public function __construct(private User $user){}

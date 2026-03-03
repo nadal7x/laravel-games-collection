@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 html,
 body {
   height: 100%;
@@ -29,6 +33,17 @@ header {
   color: var(--color-text);
 }
 
+.header-logo {
+  width: 150px;
+  background-color: var(--color-surface);
+  padding: 0.2rem;
+  border-radius: 5px;
+}
+
+.header-logo img {
+  width: 100%;
+}
+
 main {
   margin-top: var(--header-height);
   display: flex;
@@ -48,4 +63,8 @@ footer {
 h1 {
   margin: 0;
   font-size: 2rem;
+}
+
+a {
+  color: var(--color-text);
 }
