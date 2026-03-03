@@ -71,7 +71,8 @@ if (formContainer) {
 
       store.dispatch(showDeleteModal({
         endpoint,
-        id: elementId
+        formData: formData,
+        show: true
       }));
     }
 

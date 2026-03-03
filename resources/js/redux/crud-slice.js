@@ -7,8 +7,9 @@ export const crudSlice = createSlice({
     form: null,
     table: null,
     deleteModal: {
-      id: null,
-      endpoint: null
+      formData: null,
+      endpoint: null,
+      show: false
     }
   },
   reducers: {
@@ -21,13 +22,21 @@ export const crudSlice = createSlice({
     showDeleteModal: (state, action) => {
       state.deleteModal = action.payload
     },
+    hideDeleteModal: (state) => {
+      state.deleteModal = {
+        formData: null,
+        endpoint: null,
+        show: false
+      }
+    }
   }
 })
 
 export const {
   updateForm,
   updateTable,
-  showDeleteModal
+  showDeleteModal,
+  hideDeleteModal
 } = crudSlice.actions
 
 export default crudSlice.reducer
