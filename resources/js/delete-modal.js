@@ -3,7 +3,9 @@ import { hideDeleteModal } from './redux/crud-slice';
 let endpoint;
 let formData;
 
-const deleteModal = document.querySelector('.modal');
+const deleteModal = document.querySelector('.modal.delete-modal');
+
+
 const modalClose = deleteModal.querySelector('.modal-close');
 const modalCancel = deleteModal.querySelector('.modal-cancel');
 const modalConfirm = deleteModal.querySelector('.modal-confirm');
@@ -13,7 +15,6 @@ store.subscribe(() => {
 
   if (currentState.crud.deleteModal && deleteModal) {
     if (currentState.crud.deleteModal.show) {
-      console.log(currentState.crud.deleteModal);
       deleteModal.classList.add('active');
       endpoint = currentState.crud.deleteModal.endpoint;
       formData = currentState.crud.deleteModal.formData;
@@ -24,17 +25,14 @@ store.subscribe(() => {
 });
 
 modalClose.addEventListener('click', function () {
-  deleteModal.classList.remove('active');
   store.dispatch(hideDeleteModal());
 });
 
 modalCancel.addEventListener('click', function () {
-  deleteModal.classList.remove('active');
   store.dispatch(hideDeleteModal());
 });
 
 modalConfirm.addEventListener('click', async function () {
-  deleteModal.classList.remove('active');
   store.dispatch(hideDeleteModal());
   try {
     const response = await fetch(endpoint, {

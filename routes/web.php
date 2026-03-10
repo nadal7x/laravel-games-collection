@@ -13,7 +13,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'admin', 'middleware' => 'auth:web'], function () {
 
   Route::get('/panel-de-control', function () {
     return view('admin.dashboard.index');
@@ -85,14 +85,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
   ]);
 });
 
-Route::group(['prefix' => 'cuenta', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'cuenta', 'middleware' => 'auth:customer'], function () {
   Route::get('/panel-de-control', function () {
     return view('customer.dashboard.index');
   })->name('customer-dashboard');
 });
 
-Route::get('/', ['App\Http\Controllers\Public\HomeController', 'index'])->name('home');
-Route::get('/recursos/{resource}', ['App\Http\Controllers\Public\HomeController', 'show'])->name('resources.show');
+Route::get('/', ['App\Http\Controllers\Public\ResourceController', 'index'])->name('home');
+Route::get('/recursos/{resource}', ['App\Http\Controllers\Public\ResourceController', 'show'])->name('resources.show');
 
 require __DIR__.'/auth.php';
 require __DIR__.'/auth-customer.php';

@@ -128,7 +128,28 @@ if (formContainer) {
         }
       }
     }
+
+    if (event.target.closest('.tab-button')) {
+      const tabButton = event.target.closest('.tab-button');
+
+      const tabGroup = tabButton.dataset.tabGroup;
+      const tab = tabButton.dataset.tab;
+
+      const tabButtons = document.querySelectorAll(`.tab-button[data-tab-group="${tabGroup}"]`);
+      const tabContents = document.querySelectorAll(`.tab-content[data-tab-group="${tabGroup}"]`);
+
+      tabButtons.forEach(btn => btn.classList.remove('active'));
+      tabButton.classList.add('active');
+
+      tabContents.forEach(content => content.classList.remove('active'));
+      const tabContent = document.querySelector(`.tab-content[data-tab-group="${tabGroup}"][data-tab-content="${tab}"]`);
+      if (tabContent) tabContent.classList.add('active');
+
+    }
+
   });
 }
+
+
 
 

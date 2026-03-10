@@ -18,7 +18,7 @@ class ResourceFactory extends Factory
         
         $name = $this->faker->unique()->words(3, true); 
         return [
-            'steam_id' => $this->faker->optional()->numberBetween(100000, 999999), 
+            'api_id' => $this->faker->optional()->numberBetween(100000, 999999), 
             'name' => $name,
             'description' => $this->faker->paragraph(2),
             'url' => $this->faker->url(),

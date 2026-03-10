@@ -24,3 +24,7 @@
 .table-element-title {
   font-weight: bold;
 }
+
+.table-element ul {
+  padding: 0 1rem;
+}

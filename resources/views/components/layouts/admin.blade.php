@@ -41,11 +41,11 @@
                 </div>
                 <div class="menu-content">
                     <nav class="nav">
-                        <a class="fetch-link" href="{{ route('users') }}">{{ __('admin/titles.users') }}</a>
-                        <a class="fetch-link" href="{{ route('customers') }}">{{ __('admin/titles.customers') }}</a>
-                        <a class="fetch-link" href="{{ route('resources') }}">{{ __('admin/titles.resources') }}</a>
-                        <a class="fetch-link" href="{{ route('tags') }}">{{ __('admin/titles.tags') }}</a>
-                        <a class="fetch-link" href="{{ route('platforms') }}">{{ __('admin/titles.platforms') }}</a>
+                        <a href="{{ route('users') }}">{{ __('admin/titles.users') }}</a>
+                        <a href="{{ route('customers') }}">{{ __('admin/titles.customers') }}</a>
+                        <a href="{{ route('resources') }}">{{ __('admin/titles.resources') }}</a>
+                        <a href="{{ route('tags') }}">{{ __('admin/titles.tags') }}</a>
+                        <a href="{{ route('platforms') }}">{{ __('admin/titles.platforms') }}</a>
                     </nav>
                 </div>
             </div>
@@ -58,7 +58,7 @@
     <footer>
         <p>© {{ date('Y') }} {{ config('app.name') }}</p>
     </footer>
-    <div class="modal">
+    <div class="modal delete-modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Eliminar</h2>

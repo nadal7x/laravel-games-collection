@@ -35,15 +35,15 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = Customer::create([
+        $customer = Customer::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        event(new Registered($user));
+        event(new Registered($customer));
 
-        Auth::login($user);
+        Auth::guard('customer')->login($customer);
 
         return redirect(route('customer-dashboard', absolute: false));
     }

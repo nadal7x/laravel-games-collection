@@ -41,8 +41,7 @@
                 </div>
                 <div class="menu-content">
                     <nav class="nav">
-                        <a class="fetch-link"
-                            href="{{ route('customer-dashboard') }}">{{ __('titles.dashboard') }}</a>
+                        <a href="{{ route('customer-dashboard') }}">{{ __('titles.dashboard') }}</a>
                     </nav>
                 </div>
             </div>

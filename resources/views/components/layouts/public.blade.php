@@ -33,7 +33,7 @@
                             <a href="{{ route('logout') }}">{{ __('Logout') }}</a>
                         </div>
                     @else
-                        <a href="{{ route('login') }}">{{ __('Login') }}</a>
+                        <a href="{{ route('customer-login') }}">{{ __('Login') }}</a>
                     @endauth
                 @endif
             </div>

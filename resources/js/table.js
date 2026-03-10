@@ -9,6 +9,7 @@ store.subscribe(() => {
   if (currentState.crud.table && tableContainer) {
     tableContainer.innerHTML = currentState.crud.table;
   }
+
 });
 
 if (tableContainer) {
@@ -27,5 +28,12 @@ if (tableContainer) {
         })
         .catch(error => console.error(error));
     }
+
+    if (event.target.closest('.filter-button')) {
+      const filterModal = document.querySelector('.modal.filter-modal');
+      filterModal.classList.add('active');
+      filterModal.querySelector('form').reset();
+    }
+
   });
 };

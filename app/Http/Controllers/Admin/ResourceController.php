@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\View;
 use App\Http\Controllers\Controller;
-use App\Models\Resource;
+use App\Models\MongoDB\Resource;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\ResourceRequest;
+use App\Services\SitemapService;
 
 class ResourceController extends Controller
 {
-  public function __construct(private Resource $resource){}
+  public function __construct(private Resource $resource, private SitemapService $sitemapService){}
  
   public function index()
   {
@@ -24,7 +25,7 @@ class ResourceController extends Controller
             
         return response()->json([
           'table' => view('components.table.resource', ['records' => $resources])->render(),
-          'form' => view('components.form.resource', ['element' => $this->resource])->render()
+          'form' => view('components.form.resource', ['element' => $this->resource])->render(),
         ], 200); 
 
       }else{
@@ -63,10 +64,17 @@ class ResourceController extends Controller
     try{
 
       $data = $request->validated();
+      $data['_id'] = $request->input('id');
 
-      $this->resource->updateOrCreate([
-        'id' => $request->input('id')
+      $resource = $this->resource->updateOrCreate([
+        '_id' => $request->input('id')
       ], $data);
+
+      $this->sitemapService->updateOrCreateSlug(
+                'resources',
+                $resource->id,
+                $resource->name
+            );
 
       $resources = $this->resource
       ->orderBy('created_at', 'desc')
@@ -109,6 +117,11 @@ class ResourceController extends Controller
   {
     try{
       $resource->delete();
+
+      $this->sitemapService->deleteSlug(
+        'resources',
+        $resource->id
+      );
 
       $resources = $this->resource
       ->orderBy('created_at', 'desc')
