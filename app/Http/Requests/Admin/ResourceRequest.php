@@ -21,12 +21,15 @@ class ResourceRequest extends FormRequest
     {
       return [
         'name' => 'required|min:3|max:64',
-        'description' => 'required|min:3|max:255',
         'url' => 'required|min:3|max:255',
         'release_date' => 'required|date',
         'developer' => 'required|min:3|max:64',
         'publisher' => 'required|min:3|max:64',
         'rating' => 'required|min:1|max:100',
+        'tags' => 'nullable|array',
+        'platforms' => 'nullable|array',
+        'locale.*.title' => 'nullable|max:64',
+        'locale.*.description' => 'nullable|max:255',
       ];
     }
 
@@ -36,9 +39,6 @@ class ResourceRequest extends FormRequest
         'name.required' => 'El nombre es obligatorio',
         'name.min' => 'El nombre debe tener al menos 3 caracteres',
         'name.max' => 'El nombre debe tener menos de 64 caracteres',
-        'description.required' => 'La descripción es obligatoria',
-        'description.min' => 'La descripción debe tener al menos 3 caracteres',
-        'description.max' => 'La descripción debe tener menos de 255 caracteres',
         'url.required' => 'La URL es obligatoria',
         'url.url' => 'La URL debe ser una URL valida',
         'url.min' => 'La URL debe tener al menos 3 caracteres',

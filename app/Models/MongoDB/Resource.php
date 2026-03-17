@@ -11,9 +11,6 @@ class Resource extends Model
 
     protected $connection = 'mongodb';
     protected $table = 'resources';
-    protected $primaryKey = '_id';
-    protected $keyType = 'string';
-    public $incrementing = false;
     public $timestamps = true;
 
     protected $guarded = [];

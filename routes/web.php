@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Public\LangController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -83,6 +84,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:web'], function () {
       'destroy' => 'resources_destroy',
     ]
   ]);
+
+  Route::post('/images', 'App\Http\Controllers\Admin\ImageController@store')->name('images_store');
+  Route::get('/images/thumb/{filename}', 'App\Http\Controllers\Admin\ImageController@showThumb')->name('images_thumb');
+  Route::delete('/images/{filename}', 'App\Http\Controllers\Admin\ImageController@destroy')->name('images_destroy');
 });
 
 Route::group(['prefix' => 'cuenta', 'middleware' => 'auth:customer'], function () {
@@ -91,8 +96,19 @@ Route::group(['prefix' => 'cuenta', 'middleware' => 'auth:customer'], function (
   })->name('customer-dashboard');
 });
 
-Route::get('/', ['App\Http\Controllers\Public\ResourceController', 'index'])->name('home');
-Route::get('/recursos/{resource}', ['App\Http\Controllers\Public\ResourceController', 'show'])->name('resources.show');
+Route::get('/', function () {})->middleware('setlocale');
+Route::post('/change-lang', 'App\Http\Controllers\Public\LangController@changeLang')->name('change-lang');
+
+Route::group(['middleware' => 'sitemap'], function () {
+  Route::get('/es', 'App\Http\Controllers\Public\HomeController@index')->name('es.home');
+  Route::get('/es/juegos/{title}', 'App\Http\Controllers\Public\ResourceController@show')->name('es.resource');
+
+  Route::get('/ca', 'App\Http\Controllers\Public\HomeController@index')->name('ca.home');
+  Route::get('/ca/jocs/{title}', 'App\Http\Controllers\Public\ResourceController@show')->name('ca.resource');
+
+  Route::get('/en', 'App\Http\Controllers\Public\HomeController@index')->name('en.home');
+  Route::get('/en/games/{title}', 'App\Http\Controllers\Public\ResourceController@show')->name('en.resource');
+});
 
 require __DIR__.'/auth.php';
 require __DIR__.'/auth-customer.php';

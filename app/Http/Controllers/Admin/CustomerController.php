@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\View;
 use App\Http\Controllers\Controller;
-use App\Models\Customer;
+use App\Models\MySQL\Customer;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\CustomerRequest;
 
@@ -17,9 +17,32 @@ class CustomerController extends Controller
   {
     try{
 
-      $customers = $this->customer
+      $filters = [
+        'name' => 'like',
+        'email' => 'like'
+      ];
+
+      $query = $this->customer->newQuery();
+
+      foreach ($filters as $field => $type) {
+        $value = request($field);
+
+        if ($value === null || $value === '') {
+          continue;
+        }
+
+        match ($type) {
+          'like' => $query->where($field, 'like', '%' . $value . '%'),
+          '='    => $query->where($field, $value),
+          'date' => $query->whereDate($field, $value),
+          default => null,
+        };
+      }
+
+      $customers = $query
         ->orderBy('created_at', 'desc')
-        ->paginate(10);
+        ->paginate(10)
+        ->withQueryString();
       
       if(request()->ajax()) {
             

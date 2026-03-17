@@ -1,4 +1,8 @@
-<x-filter.filter-buttons element="platform" />
+<div class="table-buttons">
+    <x-filter-table element="platform" />
+    <x-pagination-buttons :records="$records" />
+</div>
+
 <div class="table-content">
     @foreach ($records as $record)
         <div class="table-element" data-endpoint="{{ route('platforms_edit', $record->id) }}">

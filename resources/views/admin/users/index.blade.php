@@ -1,9 +1,5 @@
 <x-crud title="{{ __('admin/titles.users') }}" seotitle="{{ __('admin/titles.users') }}">
 
-    <x-slot name="filter">
-        <x-filter.modal-filter element="user" />
-    </x-slot>
-
     <x-slot name="table">
         <x-table.user :records="$records" />
     </x-slot>

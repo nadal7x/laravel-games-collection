@@ -8,6 +8,7 @@ use App\Models\MongoDB\Resource;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\ResourceRequest;
 use App\Services\SitemapService;
+use Illuminate\Support\Str;
 
 class ResourceController extends Controller
 {
@@ -17,9 +18,35 @@ class ResourceController extends Controller
   {
     try{
 
-      $resources = $this->resource
+      $filters = [
+        'name' => 'like',
+        'release_date' => 'date',
+        'developer' => 'like',
+        'publisher' => 'like',
+        'rating' => '='   
+      ];
+
+      $query = $this->resource->newQuery();
+
+      foreach ($filters as $field => $type) {
+        $value = request($field);
+
+        if ($value === null || $value === '') {
+          continue;
+        }
+
+        match ($type) {
+          'like' => $query->where($field, 'like', '%' . $value . '%'),
+          '='    => $query->where($field, $value),
+          'date' => $query->whereDate($field, $value),
+          default => null,
+        };
+      }
+
+      $resources = $query
         ->orderBy('created_at', 'desc')
-        ->paginate(10);
+        ->paginate(10)
+        ->withQueryString();
       
       if(request()->ajax()) {
             
@@ -70,11 +97,13 @@ class ResourceController extends Controller
         '_id' => $request->input('id')
       ], $data);
 
-      $this->sitemapService->updateOrCreateSlug(
-                'resources',
-                $resource->id,
-                $resource->name
-            );
+      foreach ($resource->locale as $lang => $fields) {
+        $slugs = [
+          'title' => Str::slug($fields['title'])
+        ];
+
+        $this->sitemapService->updateOrCreateSlug('resources', $resource->_id, $lang, 'resource', $slugs);
+      }
 
       $resources = $this->resource
       ->orderBy('created_at', 'desc')

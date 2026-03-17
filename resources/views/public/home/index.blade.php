@@ -1,44 +1,3 @@
-<?php
-/*
-$apiKey = 'D6C054C4A6EBBA28435F9C33B11E20B7';
-$url = "https://api.steampowered.com/ISteamChartsService/GetMostPlayedGames/v1/?key=$apiKey";
-
-$response = file_get_contents($url);
-$data = json_decode($response, true);
-
-$games = [];
-$counter = 0;
-
-if (isset($data['response']['ranks']) && is_array($data['response']['ranks'])) {
-    foreach ($data['response']['ranks'] as $game) {
-        $appid = $game['appid'];
-        $rank = $game['rank'];
-
-        $storeUrl = "https://store.steampowered.com/api/appdetails?appids=$appid";
-        $storeData = json_decode(file_get_contents($storeUrl), true);
-
-        if (isset($storeData[$appid]['success']) && $storeData[$appid]['success']) {
-            $details = $storeData[$appid]['data'];
-            $cardImage = "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/$appid/library_600x900.jpg";
-            $games[] = [
-                'appid' => $appid,
-                'rank' => $rank,
-                'name' => $details['name'],
-                'card-image' => $cardImage,
-            ];
-        }
-        $counter++;
-
-        if ($counter >= 20) {
-            break;
-        }
-        usleep(500000);
-    }
-}
-*/
-$games = [];
-?>
-
 <x-layouts.public title="home" seotitle="home">
     <div class="main-text">
         <h2>Maecenas ornare lacus</h2>
@@ -52,15 +11,21 @@ $games = [];
     </div>
     <h2>{{ __('admin/titles.resources') }}</h2>
     <div class="cards-gallery">
-        @foreach ($games as $game)
+        @foreach ($records as $record)
+            @if (!$record['card-image'])
+                @php
+                    $record['card-image'] =
+                        'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/686060/ea77c084fe08e1654380778ef73f613185e7a6ca/library_600x900.jpg?t=1771573546';
+                @endphp
+            @endif
             <div class="card">
-                <a href="{{ route('resources.show', $game['appid']) }}">
+                <a
+                    href="{{ route(app()->getLocale() . '.resource', ['title' => \Str::slug($record->locale[app()->getLocale()]['title'])]) }}">
                     <div class="card-image">
-                        <img src="{{ $game['card-image'] }}">
+                        <img src="{{ $record['card-image'] }}" alt="{{ $record['name'] }}">
                     </div>
                     <div class="card-text">
-                        <span class="card-rank">{{ $game['rank'] }}</span>
-                        <h3 class="card-title">{{ $game['name'] }}</h3>
+                        <h3 class="card-title">{{ $record['name'] }}</h3>
                     </div>
                 </a>
             </div>

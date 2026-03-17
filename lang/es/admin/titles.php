@@ -18,4 +18,5 @@ return [
   'platforms' => 'Plataformas',
   'resources' => 'Juegos',
   'customers' => 'Clientes',
+  'title' => 'Título',
 ];

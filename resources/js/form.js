@@ -147,6 +147,65 @@ if (formContainer) {
 
     }
 
+    if (event.target.closest('.open-gallery')) {
+      const modal = document.querySelector('.images-modal');
+      modal.classList.add('active');
+    }
+
+    if (event.target.closest('.images-modal .modal-close') || event.target.closest('.images-modal .modal-cancel')) {
+      event.preventDefault();
+      const modal = document.querySelector('.modal.images-modal');
+      modal.classList.remove('active');
+    }
+
+    if (event.target.closest('.tag .remove-tag')) {
+      event.preventDefault();
+      const removeTag = event.target.closest('.remove-tag');
+      const tag = event.target.closest('.tag');
+      const hiddenTag = document.querySelector(`input[name="tags[]"][value="${removeTag.dataset.tagName}"]`);
+      tag.remove();
+      hiddenTag.remove();
+    }
+
+  });
+  formContainer.addEventListener('keydown', async event => {
+    if (!event.target.closest('.tag-input')) return;
+
+    if (event.key !== 'Enter') return;
+    event.preventDefault();
+
+    const tagInput = event.target.closest('.tag-input');
+    const tagsContainer = document.querySelector('.tags-container');
+    const hiddenTags = document.querySelector('.hidden-tags');
+
+    const option = [...document.querySelectorAll(".tags-list option")]
+      .find(o => o.value === tagInput.value);
+    if (!option) return;
+
+    const id = option.dataset.id;
+    const name = option.value;
+
+    const hidden = document.createElement("input");
+    hidden.type = "hidden";
+    hidden.name = "tags[]";
+    hidden.value = name;
+    hiddenTags.appendChild(hidden);
+
+    const tag = document.createElement("span");
+    tag.className = "tag";
+    tag.textContent = name;
+
+    const remove = document.createElement("button");
+    remove.textContent = "×";
+    remove.onclick = () => {
+      tag.remove();
+      hidden.remove();
+    };
+
+    tag.appendChild(remove);
+    tagsContainer.appendChild(tag);
+
+    tagInput.value = "";
   });
 }
 

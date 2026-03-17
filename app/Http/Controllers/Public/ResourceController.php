@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Public;
 
 use Illuminate\Support\Facades\View;
 use App\Http\Controllers\Controller;
-use App\Models\Resource;
+use App\Models\MongoDB\Resource;
 use Illuminate\Http\Request;
 use App\Services\SitemapService;
 
@@ -26,11 +26,11 @@ class ResourceController extends Controller
     public function show(Request $request)
     {
         try {
-            $sitemap = $this->sitemapService->getSlug($request->resource);
-           
-            $resource = $this->resource->where('id', $sitemap->entity_id)->first();
+            $resource = $this->resource->where('_id', $request->attributes->get('sitemap')->entity_id )->first();
 
-            return view('public.home.show', compact('resource'));
+            $view = View::make('public.home.show')->with('resource', $resource);
+      
+            return $view;
         } catch (\Exception $e) {
             return View::make('public.error');
         }

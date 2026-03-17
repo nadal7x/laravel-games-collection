@@ -14,11 +14,12 @@
 <body>
     <header>
         <div class="header-logo">
-            <a href="{{ route('home') }}">
+            <a href="{{ route(app()->getLocale() . '.home') }}">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo">
             </a>
         </div>
         <div class="header-menus-container">
+            <x-lang-select />
             <div class="account-menu-container">
                 @if (Route::has('login'))
                     @auth

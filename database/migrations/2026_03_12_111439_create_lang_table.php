@@ -10,12 +10,12 @@ return new class extends Migration
     {
         Schema::create('lang', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre', 100);
-            $table->string('code', 10)->unique();
-            $table->string('locale', 10)->unique();
-            $table->boolean('active')->default(true);
-            $table->boolean('default')->default(false);
+            $table->string('name');
+            $table->string('code');
+            $table->string('locale');
+            $table->boolean('active')->default(false);
             $table->timestamps();
+            $table->softDeletes(); 
         });
     }
 

@@ -81,6 +81,41 @@
   background: var(--color-primary);
 }
 
+.lang-select-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: var(--header-height);
+  margin-right: 1rem;
+  position: relative;
+  cursor: pointer;
+}
+
+.lang-select-container select,
+.lang-select-container option {
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+}
+
+.lang-select-container option:checked {
+  background-color: var(--color-primary);
+  color: var(--color-text);
+}
+
+.lang-select-container select:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.lang-select-container select:open {
+  background-color: var(--color-bg);
+  color: var(--color-primary);
+}
+
+
 @media (max-width: 768px) {
 
   .menu-content {

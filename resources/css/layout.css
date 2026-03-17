@@ -47,7 +47,7 @@ header {
 main {
   margin-top: var(--header-height);
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: column wrap;
   padding: 1rem;
 }
 

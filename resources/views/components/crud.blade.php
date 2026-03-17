@@ -4,10 +4,6 @@
 
     <div class="crud">
 
-        <div class="filter">
-            {{ $filter }}
-        </div>
-
         <div class="table">
             {{ $table }}
         </div>

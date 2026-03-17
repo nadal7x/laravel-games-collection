@@ -28,7 +28,7 @@ export const crudSlice = createSlice({
         endpoint: null,
         show: false
       }
-    }
+    },
   }
 })
 

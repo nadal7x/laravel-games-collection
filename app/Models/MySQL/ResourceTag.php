@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\MySQL;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\Resource;
 
-class ResourcePlatform extends Model
+class ResourceTag extends Model
 {
     use SoftDeletes;
 

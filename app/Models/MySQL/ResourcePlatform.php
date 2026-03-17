@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\MySQL;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\Resource;
-use App\Models\ResourceTag;
 
-class Tag extends Model
+class ResourcePlatform extends Model
 {
     use SoftDeletes;
 
@@ -17,6 +16,6 @@ class Tag extends Model
 
     public function resources()
     {
-        return $this->hasManyThrough(Resource::class, ResourceTag::class);
+        return $this->belongsTo(Resource::class);
     }
 }

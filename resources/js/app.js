@@ -11,4 +11,5 @@ import './menu';
 import './form';
 import './table';
 import './delete-modal';
-import './filter-modal';
+import './lang-menu';
+import './images';

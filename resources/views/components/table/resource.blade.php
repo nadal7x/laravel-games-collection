@@ -1,16 +1,14 @@
-<x-filter.filter-buttons element="resource" />
+<div class="table-buttons">
+    <x-filter-table element="resource" />
+    <x-pagination-buttons :records="$records" />
+</div>
+
 <div class="table-content">
     @foreach ($records as $record)
         <div class="table-element" data-endpoint="{{ route('resources_edit', $record->id) }}">
             <ul>
                 <li><span class="table-element-title">{{ __('admin/titles.name') }}:</span>
                     {{ $record->name }}
-                </li>
-                <li><span class="table-element-title">{{ __('admin/titles.description') }}:</span>
-                    {{ $record->description }}
-                </li>
-                <li><span class="table-element-title">{{ __('admin/titles.url') }}:</span>
-                    {{ $record->url }}
                 </li>
                 <li><span class="table-element-title">{{ __('admin/titles.release_date') }}:</span>
                     {{ $record->release_date }}

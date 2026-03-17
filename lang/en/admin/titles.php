@@ -18,5 +18,5 @@ return [
   'platforms' => 'Platforms',
   'resources' => 'Games',
   'customers' => 'Customers',
-
+  'title' => 'Title',
 ];
