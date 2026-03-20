@@ -23,7 +23,8 @@ class ViewComposerServiceProvider extends ServiceProvider
 
       view()->composer([
         'components.lang-select',
-        'components.form.lang'
+        'components.form.lang',
+        'components.form.images'
       ],
         'App\Http\ViewComposers\Lang'
       );

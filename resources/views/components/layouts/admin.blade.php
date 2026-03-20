@@ -58,6 +58,7 @@
     <footer>
         <p>© {{ date('Y') }} {{ config('app.name') }}</p>
     </footer>
+
     <div class="modal delete-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -77,6 +78,11 @@
             </div>
         </div>
     </div>
+
+    <div class="modal images-modal">
+        <x-form.modal-images />
+    </div>
+
 </body>
 
 </html>

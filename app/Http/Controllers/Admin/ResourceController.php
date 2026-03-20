@@ -91,6 +91,8 @@ class ResourceController extends Controller
     try{
 
       $data = $request->validated();
+
+      \Debugbar::info($data['images']);
       $data['_id'] = $request->input('id');
 
       $resource = $this->resource->updateOrCreate([

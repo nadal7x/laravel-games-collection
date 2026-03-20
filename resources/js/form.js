@@ -83,6 +83,31 @@ if (formContainer) {
       const formData = new FormData(form);
       const endpoint = saveButton.dataset.endpoint;
 
+      const imagesBoxes = form.querySelectorAll('.images-gallery-box');
+      const imagesData = {};
+      imagesBoxes.forEach(imageBox => {
+        const imagesConfig = imageBox.dataset.config;
+        const imageContainers = imageBox.querySelectorAll('.open-gallery');
+        imageContainers.forEach(imageContainer => {
+          const name = imageContainer.dataset.name;
+          const lang = imageContainer.dataset.lang;
+          const image = imageContainer.querySelector('img');
+          if (image?.src) {
+            console.log(image.src);
+            imagesData[lang] ??= {};
+            imagesData[lang][name] ??= { files: [] };
+            imagesData[lang][name].files.push({
+              filename: image.src.split('/').pop(),
+              title: image.title,
+              alt: image.alt,
+              config: imagesConfig
+            });
+          }
+        });
+      });
+
+      formData.append('images', JSON.stringify(imagesData));
+
       try {
         const response = await fetch(endpoint, {
           method: 'POST',
@@ -96,6 +121,7 @@ if (formContainer) {
         if (!response.ok) {
           throw response;
         }
+
 
         const data = await response.json();
         if (data.form) {
@@ -144,12 +170,25 @@ if (formContainer) {
       tabContents.forEach(content => content.classList.remove('active'));
       const tabContent = document.querySelector(`.tab-content[data-tab-group="${tabGroup}"][data-tab-content="${tab}"]`);
       if (tabContent) tabContent.classList.add('active');
+    }
 
+    if (event.target.closest('.image-remove')) {
+      event.stopPropagation();
+      event.preventDefault();
+      let galleryElement = event.target.closest('.open-gallery');
+      galleryElement.querySelector('img').src = '';
+      galleryElement.querySelector('img').alt = '';
+      galleryElement.querySelector('img').title = '';
+      galleryElement.classList.remove('active');
+      return;
     }
 
     if (event.target.closest('.open-gallery')) {
-      const modal = document.querySelector('.images-modal');
-      modal.classList.add('active');
+      document.dispatchEvent(new CustomEvent('open-gallery-modal', {
+        detail: {
+          element: event.target.closest('.open-gallery')
+        }
+      }));
     }
 
     if (event.target.closest('.images-modal .modal-close') || event.target.closest('.images-modal .modal-cancel')) {
@@ -168,6 +207,7 @@ if (formContainer) {
     }
 
   });
+
   formContainer.addEventListener('keydown', async event => {
     if (!event.target.closest('.tag-input')) return;
 

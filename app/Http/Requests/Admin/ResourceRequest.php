@@ -17,6 +17,15 @@ class ResourceRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation()
+    {
+        if ($this->has('images') && is_string($this->images)) {
+            $this->merge([
+                'images' => json_decode($this->images, true),
+            ]);
+        }
+    }
+
     public function rules()
     {
       return [
@@ -28,6 +37,12 @@ class ResourceRequest extends FormRequest
         'rating' => 'required|min:1|max:100',
         'tags' => 'nullable|array',
         'platforms' => 'nullable|array',
+        'images' => 'nullable|array',
+        'images.*' => 'nullable|array',
+        'images.*.*' => 'nullable|array',
+        'images.*.title' => 'nullable|string',
+        'images.*.alt' => 'nullable|string',
+        'images.*.filename' => 'nullable|string',
         'locale.*.title' => 'nullable|max:64',
         'locale.*.description' => 'nullable|max:255',
       ];
@@ -54,6 +69,8 @@ class ResourceRequest extends FormRequest
         'rating.required' => 'La calificación es obligatoria',
         'rating.min' => 'La calificación debe tener al menos 1 caracter',
         'rating.max' => 'La calificación debe tener menos de 100 caracteres',
+        'locale.*.title.max' => 'El título de la imagen debe tener menos de 64 caracteres',
+        'locale.*.description.max' => 'La descripción de la imagen debe tener menos de 255 caracteres',
       ];
     }
 }
