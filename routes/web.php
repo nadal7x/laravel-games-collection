@@ -85,6 +85,19 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:web'], function () {
     ]
   ]);
 
+  Route::resource('faqs', 'App\Http\Controllers\Admin\FaqController', [
+    'parameters' => [
+      'faqs' => 'faq',
+    ],
+    'names' => [
+      'index' => 'faqs',
+      'create' => 'faqs_create',
+      'edit' => 'faqs_edit',
+      'store' => 'faqs_store',
+      'destroy' => 'faqs_destroy',
+    ]
+  ]);
+
   Route::post('/images', 'App\Http\Controllers\Admin\ImageController@store')->name('images_store');
   Route::get('/images/thumb/{filename}', 'App\Http\Controllers\Admin\ImageController@showThumb')->name('images_thumb');
   Route::delete('/images/{filename}', 'App\Http\Controllers\Admin\ImageController@destroy')->name('images_destroy');
@@ -99,6 +112,11 @@ Route::group(['prefix' => 'cuenta', 'middleware' => 'auth:customer'], function (
 Route::get('/', function () {})->middleware('setlocale');
 Route::post('/change-lang', 'App\Http\Controllers\Public\LangController@changeLang')->name('change-lang');
 
+Route::get('/es/preguntas-frecuentes', 'App\Http\Controllers\Public\FaqController@index')->name('es.faqs');
+Route::get('/ca/preguntes-frequents', 'App\Http\Controllers\Public\FaqController@index')->name('ca.faqs');
+Route::get('/en/faqs', 'App\Http\Controllers\Public\FaqController@index')->name('en.faqs');
+
+
 Route::group(['middleware' => 'sitemap'], function () {
   Route::get('/es', 'App\Http\Controllers\Public\HomeController@index')->name('es.home');
   Route::get('/es/juegos/{title}', 'App\Http\Controllers\Public\ResourceController@show')->name('es.resource');
@@ -108,6 +126,7 @@ Route::group(['middleware' => 'sitemap'], function () {
 
   Route::get('/en', 'App\Http\Controllers\Public\HomeController@index')->name('en.home');
   Route::get('/en/games/{title}', 'App\Http\Controllers\Public\ResourceController@show')->name('en.resource');
+
 });
 
 require __DIR__.'/auth.php';

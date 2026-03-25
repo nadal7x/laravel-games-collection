@@ -38,8 +38,6 @@ class ResourceRequest extends FormRequest
         'tags' => 'nullable|array',
         'platforms' => 'nullable|array',
         'images' => 'nullable|array',
-        'images.*' => 'nullable|array',
-        'images.*.*' => 'nullable|array',
         'images.*.title' => 'nullable|string',
         'images.*.alt' => 'nullable|string',
         'images.*.filename' => 'nullable|string',

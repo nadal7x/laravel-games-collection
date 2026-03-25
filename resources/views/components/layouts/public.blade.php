@@ -46,6 +46,8 @@
                 </div>
                 <div class="menu-content">
                     <nav class="nav">
+                        <a href="{{ route(app()->getLocale() . '.home') }}">{{ __('titles.home') }}</a>
+                        <a href="{{ route(app()->getLocale() . '.faqs') }}">{{ __('titles.faqs') }}</a>
                     </nav>
                 </div>
             </div>

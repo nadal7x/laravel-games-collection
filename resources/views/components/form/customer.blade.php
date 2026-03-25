@@ -12,16 +12,16 @@
                 <label>{{ __('admin/titles.email') }}</label>
                 <input type="mail" name="email" value="{{ $element ? $element->email : '' }}">
             </div>
-            @if (!$element)
-                <div class="form-field">
-                    <label>{{ __('admin/titles.password') }}</label>
-                    <input type="password" name="password" value="">
-                </div>
-                <div class="form-field">
-                    <label>{{ __('admin/titles.password_confirmation') }}</label>
-                    <input type="password" name="password_confirmation" value="">
-                </div>
-            @endif
+
+            <div class="form-field">
+                <label>{{ __('admin/titles.password') }}</label>
+                <input type="password" name="password" value="">
+            </div>
+            <div class="form-field">
+                <label>{{ __('admin/titles.password_confirmation') }}</label>
+                <input type="password" name="password_confirmation" value="">
+            </div>
+
         </div>
         <div class="images-content tab-content" data-tab-content="images" data-tab-group="main">
             <x-form.images :element="$element" />

@@ -1,38 +1,42 @@
-@props(['element', 'lang', 'name', 'multiple'])
+@props(['element', 'lang', 'name', 'quantity'])
 
-<div class="images-gallery-box {{ $multiple }}"
-    data-config=" 'thumbnail' => [
-                  'widthPx' => '100',
-                  'heightPx' => '100'
-                ],
-                'xs' => [
-                  'widthPx' => '200',
-                  'heightPx' => '200'
-                ],
-                'sm' => [
-                  'widthPx' => '200',
-                  'heightPx' => '200'
-                ],
-                'md' => [
-                  'widthPx' => '450',
-                  'heightPx' => '450'
-                ],
-                'lg' => [
-                  'widthPx' => '450',
-                  'heightPx' => '450'
-                ]
-              ]">
+<div class="images-gallery-box {{ $quantity }}"
+    data-config="{{ json_encode([
+        'thumbnail' => [
+            'widthPx' => '100',
+            'heightPx' => '100',
+        ],
+        'xs' => [
+            'widthPx' => '200',
+            'heightPx' => '200',
+        ],
+        'sm' => [
+            'widthPx' => '200',
+            'heightPx' => '200',
+        ],
+        'md' => [
+            'widthPx' => '450',
+            'heightPx' => '450',
+        ],
+        'lg' => [
+            'widthPx' => '450',
+            'heightPx' => '450',
+        ],
+    ]) }}"
+    data-quantity="{{ $quantity }}" data-name="{{ $name }}" data-lang="{{ $lang }}">
     <label for="images">{{ __('admin/titles.' . $name) }}</label>
-    @if (isset($element->images[$lang][$name]['files']))
-        @foreach ($element->images[$lang][$name]['files'] as $image)
-            <div class="open-gallery active" data-name="{{ $name }}" data-lang="{{ $lang }}">
-                <div class="image-remove">
-                    <button>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path
-                                d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-                        </svg>
-                    </button>
+    @if (isset($element->adminImages[$lang][$name]['files']))
+        @foreach ($element->adminImages[$lang][$name]['files'] as $image)
+            <div class="open-gallery active">
+                <div class="image-actions-gallery">
+                    <div class="image-remove">
+                        <button>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
                 <div class="open-gallery-overlay">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -42,22 +46,24 @@
                     </svg>
                 </div>
                 @if (isset($image['filename']) && $image['filename'] != '')
-                    <img src="{{ route('images_thumb', $image['filename']) }}" alt="{{ $image['alt'] ?? '' }}"
-                        title="{{ $image['title'] ?? '' }}">
+                    <img src="{{ $image['filename'] ? route('images_thumb', $image['filename']) : '' }}"
+                        alt="{{ $image['alt'] ?? '' }}" title="{{ $image['title'] ?? '' }}">
                 @else
                     <img src="" alt="" title="">
                 @endif
             </div>
         @endforeach
     @else
-        <div class="open-gallery" data-name="gallery" data-lang="{{ $lang }}">
-            <div class="image-remove">
-                <button>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path
-                            d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-                    </svg>
-                </button>
+        <div class="open-gallery">
+            <div class="image-actions-gallery">
+                <div class="image-remove">
+                    <button>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path
+                                d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                        </svg>
+                    </button>
+                </div>
             </div>
             <div class="open-gallery-overlay">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">

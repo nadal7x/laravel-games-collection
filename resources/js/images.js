@@ -15,6 +15,9 @@ if (imageGalleryContainer) {
     imageAlt = openGalleryElement.querySelector('img').getAttribute('alt');
     imageSrc = openGalleryElement.querySelector('img').getAttribute('src');
 
+    const allImageItems = document.querySelectorAll('.image-item');
+    allImageItems.forEach(item => item.classList.remove('selected'));
+
     if (imageSrc) {
       galleryTitle.value = imageTitle;
       galleryAlt.value = imageAlt;
@@ -22,8 +25,6 @@ if (imageGalleryContainer) {
     } else {
       galleryTitle.value = '';
       galleryAlt.value = '';
-      const allImageItems = document.querySelectorAll('.image-item');
-      allImageItems.forEach(item => item.classList.remove('selected'));
     }
   })
 
@@ -39,13 +40,14 @@ if (imageGalleryContainer) {
       const imageItem = document.querySelector('.image-item.selected')
       if (imageItem) {
         const multipleImages = openGalleryElement.parentElement.classList.contains('multiple');
-        if (multipleImages && openGalleryElement.classList.contains('active')) {
+        if (multipleImages && !openGalleryElement.classList.contains('active')) {
+          console.log('multipleImages && !openGalleryElement.classList.contains("active")');
           const newImage = openGalleryElement.cloneNode(true);
           newImage.querySelector('img').src = imageItem.querySelector('img').src;
           newImage.querySelector('img').alt = galleryAlt.value;
           newImage.querySelector('img').title = galleryTitle.value;
+          newImage.classList.add('active');
           openGalleryElement.parentElement.appendChild(newImage);
-
         } else {
           openGalleryElement.querySelector('img').src = imageItem.querySelector('img').src;
           openGalleryElement.querySelector('img').alt = galleryAlt.value;

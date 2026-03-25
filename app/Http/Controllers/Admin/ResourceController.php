@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Admin\ResourceRequest;
 use App\Services\SitemapService;
 use Illuminate\Support\Str;
+use App\Events\ResourceStored;
 
 class ResourceController extends Controller
 {
@@ -92,20 +93,19 @@ class ResourceController extends Controller
 
       $data = $request->validated();
 
-      \Debugbar::info($data['images']);
       $data['_id'] = $request->input('id');
+      unset($data['images']);
 
       $resource = $this->resource->updateOrCreate([
         '_id' => $request->input('id')
       ], $data);
 
-      foreach ($resource->locale as $lang => $fields) {
-        $slugs = [
-          'title' => Str::slug($fields['title'])
-        ];
-
-        $this->sitemapService->updateOrCreateSlug('resources', $resource->_id, $lang, 'resource', $slugs);
-      }
+      ResourceStored::dispatch(
+        $resource, 
+        $request->filled('images')
+          ? $request->input('images')
+          : []
+      );
 
       $resources = $this->resource
       ->orderBy('created_at', 'desc')

@@ -46,6 +46,7 @@
                         <a href="{{ route('resources') }}">{{ __('admin/titles.resources') }}</a>
                         <a href="{{ route('tags') }}">{{ __('admin/titles.tags') }}</a>
                         <a href="{{ route('platforms') }}">{{ __('admin/titles.platforms') }}</a>
+                        <a href="{{ route('faqs') }}">{{ __('admin/titles.faqs') }}</a>
                     </nav>
                 </div>
             </div>

@@ -19,4 +19,10 @@ return [
   'resources' => 'Games',
   'customers' => 'Customers',
   'title' => 'Title',
+  'header' => 'Header',
+  'gallery' => 'Gallery',
+  'images' => 'Images',
+  'faqs' => 'FAQs',
+  'question' => 'Question',
+  'answer' => 'Answer',
 ];

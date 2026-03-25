@@ -19,4 +19,10 @@ return [
   'resources' => 'Juegos',
   'customers' => 'Clientes',
   'title' => 'Título',
+  'header' => 'Cabecera',
+  'gallery' => 'Galería',
+  'images' => 'Imágenes',
+  'faqs' => 'FAQs',
+  'question' => 'Pregunta',
+  'answer' => 'Respuesta',
 ];

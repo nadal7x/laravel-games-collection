@@ -42,6 +42,7 @@
                 <div class="menu-content">
                     <nav class="nav">
                         <a href="{{ route('customer-dashboard') }}">{{ __('titles.dashboard') }}</a>
+                        <a href="{{ route('faqs') }}">{{ __('admin/titles.faqs') }}</a>
                     </nav>
                 </div>
             </div>

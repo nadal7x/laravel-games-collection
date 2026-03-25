@@ -77,36 +77,47 @@ if (formContainer) {
     }
 
     if (event.target.closest('.save-button')) {
+
       event.preventDefault();
+
       const saveButton = event.target.closest('.save-button');
       const form = formContainer.querySelector('form');
       const formData = new FormData(form);
       const endpoint = saveButton.dataset.endpoint;
 
       const imagesBoxes = form.querySelectorAll('.images-gallery-box');
-      const imagesData = {};
+      const images = [];
+
       imagesBoxes.forEach(imageBox => {
-        const imagesConfig = imageBox.dataset.config;
+        const image = {
+          imageConfigurations: JSON.parse(imageBox.dataset.config),
+          name: imageBox.dataset.name,
+          languageAlias: imageBox.dataset.lang,
+          files: []
+        }
+
         const imageContainers = imageBox.querySelectorAll('.open-gallery');
+
         imageContainers.forEach(imageContainer => {
-          const name = imageContainer.dataset.name;
-          const lang = imageContainer.dataset.lang;
-          const image = imageContainer.querySelector('img');
-          if (image?.src) {
-            console.log(image.src);
-            imagesData[lang] ??= {};
-            imagesData[lang][name] ??= { files: [] };
-            imagesData[lang][name].files.push({
-              filename: image.src.split('/').pop(),
-              title: image.title,
-              alt: image.alt,
-              config: imagesConfig
+          const imageElement = imageContainer.querySelector('img');
+
+          if (imageElement?.src) {
+            image.files.push({
+              filename: imageElement.src.split('/').pop(),
+              title: imageElement.title,
+              alt: imageElement.alt
             });
           }
         });
+
+        if (image.files.length > 0) {
+          images.push(image);
+        }
       });
 
-      formData.append('images', JSON.stringify(imagesData));
+      if (images.length > 0) {
+        formData.append('images', JSON.stringify(images));
+      }
 
       try {
         const response = await fetch(endpoint, {

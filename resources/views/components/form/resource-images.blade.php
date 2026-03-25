@@ -13,6 +13,8 @@
             data-tab-content="{{ $lang->code }}" data-tab-group="lang-images">
             <x-form.images-box :element="$element" :lang="$lang->code" name="header" quantity="single">
             </x-form.images-box>
+            <x-form.images-box :element="$element" :lang="$lang->code" name="gallery" quantity="multiple">
+            </x-form.images-box>
         </div>
     @endforeach
 </div>

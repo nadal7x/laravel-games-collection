@@ -40,7 +40,7 @@
             <x-form.lang :element="$element" :langs="['es', 'en']" :fields="['text' => 'title', 'textarea' => 'description']" />
         </div>
         <div class="images-content tab-content" data-tab-content="images" data-tab-group="main">
-            <x-form.images :element="$element" />
+            <x-form.resource-images :element="$element" />
         </div>
 
     </form>

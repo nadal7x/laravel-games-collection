@@ -4,26 +4,23 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\View;
 use App\Http\Controllers\Controller;
-use App\Models\MySQL\Customer;
+use App\Models\MongoDB\Faq;
 use Illuminate\Http\Request;
-use App\Http\Requests\Admin\CustomerRequest;
-use App\Jobs\WelcomeMail;
+use App\Http\Requests\Admin\FaqRequest;
 
-
-class CustomerController extends Controller
+class FaqController extends Controller
 {
-  public function __construct(private Customer $customer){}
+  public function __construct(private Faq $faq){}
  
- public function index()
+  public function index()
   {
     try{
 
       $filters = [
-        'name' => 'like',
-        'email' => 'like'
+        'name' => 'like' 
       ];
 
-      $query = $this->customer->newQuery();
+      $query = $this->faq->newQuery();
 
       foreach ($filters as $field => $type) {
         $value = request($field);
@@ -40,23 +37,22 @@ class CustomerController extends Controller
         };
       }
 
-      $customers = $query
+      $faqs = $query
         ->orderBy('created_at', 'desc')
         ->paginate(10)
         ->withQueryString();
-      
       if(request()->ajax()) {
-            
+          
         return response()->json([
-          'table' => view('components.table.customer', ['records' => $customers])->render(),
-          'form' => view('components.form.customer', ['element' => $this->customer])->render()
+          'table' => view('components.table.faq', ['records' => $faqs])->render(),
+          'form' => view('components.form.faq', ['element' => $this->faq])->render()
         ], 200); 
 
       }else{
 
-        $view = View::make('admin.customers.index')
-        ->with('records', $customers)
-        ->with('element', $this->customer);
+        $view = View::make('admin.faqs.index')
+        ->with('records', $faqs)
+        ->with('element', $this->faq);
 
         return $view;
       }
@@ -68,12 +64,12 @@ class CustomerController extends Controller
     }
   }
 
-   public function create()
+  public function create()
   {
     try {
       if (request()->ajax()) {
         return response()->json([
-          'form' => view('components.form.customer', ['element' => $this->customer])->render(),
+          'form' => view('components.form.faq', ['element' => $this->faq])->render(),
         ], 200);
       }
     } catch (\Exception $e) {
@@ -83,27 +79,19 @@ class CustomerController extends Controller
     }
   }
 
-  public function store(CustomerRequest $request)
+   public function store(FaqRequest $request)
   {            
     try{
 
       $data = $request->validated();
-
-      unset($data['password_confirmation']);
       
-      if (!$request->filled('password') && $request->filled('id')){
-        unset($data['password']);
-      }
-  
-      $this->customer->updateOrCreate([
+      $this->faq->updateOrCreate([
         'id' => $request->input('id')
       ], $data);
 
-      $customers = $this->customer
+      $faqs = $this->faq
       ->orderBy('created_at', 'desc')
       ->paginate(10);
-
-      WelcomeMail::dispatch($this->customer);
 
       if ($request->filled('id')){
         $message = \Lang::get('admin/notification.update');
@@ -112,8 +100,8 @@ class CustomerController extends Controller
       }
       
       return response()->json([
-        'table' => view('components.table.customer', ['records' => $customers])->render(),
-        'form' => view('components.form.customer', ['element' => $this->customer])->render(),
+        'table' => view('components.table.faq', ['records' => $faqs])->render(),
+        'form' => view('components.form.faq', ['element' => $this->faq])->render(),
         'message' => $message,
       ], 200);
     }
@@ -124,11 +112,11 @@ class CustomerController extends Controller
     }
   }
 
-  public function edit(Customer $customer)
+  public function edit(Faq $faq)
   {
     try{
       return response()->json([
-        'form' => view('components.form.customer', ['element' => $customer])->render(),
+        'form' => view('components.form.faq', ['element' => $faq])->render(),
       ], 200);
     }
     catch(\Exception $e){
@@ -138,20 +126,20 @@ class CustomerController extends Controller
     }
   }
 
-  public function destroy(Customer $customer)
+  public function destroy(Faq $faq)
   {
     try{
-      $customer->delete();
+      $faq->delete();
 
-      $customers = $this->customer
+      $faqs = $this->faq
       ->orderBy('created_at', 'desc')
       ->paginate(10);
 
       $message = \Lang::get('admin/notification.destroy');
       
       return response()->json([
-        'table' => view('components.table.customer', ['records' => $customers])->render(),
-        'form' => view('components.form.customer', ['element' => $this->customer])->render(),
+        'table' => view('components.table.faq', ['records' => $faqs])->render(),
+        'form' => view('components.form.faq', ['element' => $this->faq])->render(),
         'message' => $message,
       ], 200);
     }
