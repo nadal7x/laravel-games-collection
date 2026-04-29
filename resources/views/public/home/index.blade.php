@@ -32,3 +32,5 @@
         @endforeach
     </div>
 </x-layouts.public>
+
+<x-chat />

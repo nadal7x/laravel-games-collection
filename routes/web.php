@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Public\LangController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ChatController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -129,6 +130,7 @@ Route::group(['middleware' => 'sitemap'], function () {
 
 });
 
+Route::post('api/chat', [ChatController::class, 'chat']);
 require __DIR__.'/auth.php';
 require __DIR__.'/auth-customer.php';
 

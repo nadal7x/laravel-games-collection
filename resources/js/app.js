@@ -14,3 +14,4 @@ import './delete-modal';
 import './lang-menu';
 import './images';
 import './faqs';
+import './chat';
